@@ -45,10 +45,12 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
         /* Why is this padded? */
         makeChunked(makePadded(data, size), size, [&staticData, &b](const uint8_t *data, size_t size) {
-            auto [inflation, valid] = staticData.inflationStream.inflate(&staticData.zlibContext, std::string_view((char *) data, size), 256);
+            auto inflation = staticData.inflationStream.inflate(&staticData.zlibContext, std::string_view((char *) data, size), 256);
 
             /* Trigger ASAN flaws if length is more than 256 */
-            b.set(inflation.length());
+            if (inflation.has_value()) {
+                b.set(inflation->length());
+            }
         });
 
         makeChunked(makePadded(data, size), size, [&staticData](const uint8_t *data, size_t size) {
