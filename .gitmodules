@@ -4,3 +4,6 @@
 [submodule "fuzzing/libEpollFuzzer"]
 	path = fuzzing/libEpollFuzzer
 	url = https://github.com/uNetworking/libEpollFuzzer
+[submodule "ext/libuv"]
+	path = ext/libuv
+	url = https://github.com/libuv/libuv
